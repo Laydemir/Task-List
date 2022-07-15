@@ -74,7 +74,7 @@ body {
 }
 
 .btn-action img {
-  pointer-events: none;
+  pointer-events: none; /* свойство при котором клик проходит сквозь картинку и действует только на кнопку*/
 }
 
 .none {

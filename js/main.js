@@ -4,8 +4,16 @@ const taskInput = document.querySelector('#taskInput');
 const tasksList = document.querySelector('#tasksList');
 const emptyList = document.querySelector('#emptyList');
 
+
+// добавление задачи
 form.addEventListener('submit', addTask);
 
+// удаление задачи
+tasksList.addEventListener('click', deleteTask);
+
+
+
+// функции
 function addTask(event) {
 	// Отменяем отправку формы
 	event.preventDefault();
@@ -40,6 +48,20 @@ function addTask(event) {
 	}
 }
 
+function deleteTask(event) {
+	// проверяем, что клик был по кнопке "удалить"
+	if (event.target.dataset.action === 'delete') {
+		const parenNode = event.target.closest('.list-group-item');
+		parenNode.remove();
+	}
+	//Открываем запись "Список дел пуст" (убирае класс NONE) если все задачи удаляются
+	if (tasksList.children.length === 1) {
+		emptyList.classList.remove('none')
+	}
+
+}
+
+
 
 
 
@@ -56,7 +78,6 @@ if (localStorage.getItem('tasks')) {
 checkEmptyList();
 
 
-tasksList.addEventListener('click', deleteTask);
 tasksList.addEventListener('click', doneTask);
 
 // Функции
