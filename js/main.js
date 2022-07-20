@@ -8,11 +8,8 @@ let tasks = [];
 
 if (localStorage.getItem('tasks')) {
 	tasks = JSON.parse(localStorage.getItem('tasks'));
+	tasks.forEach((task) => renderTask(task));
 }
-
-tasks.forEach(function (task) {
-	renderTask(task);
-});
 
 checkEmptyList();
 
@@ -22,8 +19,6 @@ form.addEventListener('submit', addTask);
 tasksList.addEventListener('click', deleteTask);
 // отмечаем задачу, как завершенную
 tasksList.addEventListener('click', doneTask);
-
-
 
 // функции
 function addTask(event) {
