@@ -5,6 +5,33 @@ const tasksList = document.querySelector('#tasksList');
 const emptyList = document.querySelector('#emptyList');
 
 let tasks = [];
+
+if (localStorage.getItem('tasks')) {
+	tasks = JSON.parse(localStorage.getItem('tasks'));
+}
+
+tasks.forEach(function (task) {
+	// формируем CSS класс задачи
+	const cssClass = task.done ? 'task-title task-title--done' : 'task-title';
+
+	//формируем разметку для новой задачи
+	const taskHTML = `
+			<li id="${task.id}" class="list-group-item d-flex justify-content-between task-item">
+				<span class="${cssClass}">${task.text}</span>
+				<div class="task-item__buttons">
+					<button type="button" data-action="done" class="btn-action">
+						<img src="./img/tick.svg" alt="Done" width="18" height="18">
+					</button>
+					<button type="button" data-action="delete" class="btn-action">
+						<img src="./img/cross.svg" alt="Done" width="18" height="18">
+					</button>
+				</div>
+			</li>`;
+
+	//добавить задачу на чтраницу
+	tasksList.insertAdjacentHTML('beforeend', taskHTML);
+});
+
 checkEmptyList();
 
 // добавление задачи
@@ -33,6 +60,9 @@ function addTask(event) {
 
 	//добавляем задачу в массив с задачами
 	tasks.push(newTask);
+
+	// задачу в хранилище браузера
+	saveToLocalStorage();
 
 	// формируем CSS класс задачи
 	const cssClass = newTask.done ? 'task-title task-title--done' : 'task-title';
@@ -82,6 +112,8 @@ function deleteTask(event) {
 
 	tasks = tasks.filter((task) => task.id !== id)// удаление задачи через фильтрацию массива:
 
+	//сохраняем изменения задачи в хранилище браузера
+	saveToLocalStorage();
 
 	parenNode.remove();// удаляем задачу из разметки
 
@@ -105,6 +137,9 @@ function doneTask(event) {
 
 	task.done = !task.done //изменение состояния задачи на уолвне данных
 
+	//сохраняем список задач в хранилище браузера
+	saveToLocalStorage();
+
 	const taskTitle = parentNode.querySelector('.task-title');
 	taskTitle.classList.toggle('task-title--done');
 }
@@ -124,7 +159,10 @@ function checkEmptyList() {
 	}
 }
 
-
+// сохранение массива в ЛокалСторедж
+function saveToLocalStorage() {
+	localStorage.setItem('tasks', JSON.stringify(tasks))
+}
 
 
 
